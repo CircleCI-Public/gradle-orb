@@ -1,0 +1,18 @@
+description: >
+  How to override the default executor and supply your own custom Docker image to the gradle orb jobs.
+usage:
+  version: 2.1
+
+  orbs:
+    gradle: circleci/gradle@x.y
+
+  executors:
+    my-executor:
+      docker:
+        - image: org/image:tag
+
+  workflows:
+    gradle_test:
+      jobs:
+        - gradle/test:
+            executor: my-executor

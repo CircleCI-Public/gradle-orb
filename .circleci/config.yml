@@ -28,7 +28,10 @@ jobs:
     executor: orb-tools/ubuntu
     steps:
       - checkout
-    # - your-orb/your-orb-command
+      - run:
+          name: WARNING add tests
+          command: |
+            echo "Oh no! This orb has no tests! Ensure these are added ASAP!"
 
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.

@@ -1,0 +1,18 @@
+description: |
+  Checkout and run task in a gradle project.
+executor: << parameters.executor >>
+parameters:
+  executor:
+    description: The name of custom executor to use
+    type: executor
+    default: default
+  command:
+    type: string
+    default: build
+steps:
+  - checkout
+  - with_cache:
+      steps:
+        - run:
+            name: Run Task
+            command: ./gradlew << parameters.command >>
