@@ -36,11 +36,6 @@ jobs:
             else
               echo Gradle successfully installed.
             fi
-            if [[ $(command -v gradlew) == "" ]]; then
-              echo " gradlew is not installed! "; exit 1;
-            else
-              echo gradlew successfully installed.
-            fi
 
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
