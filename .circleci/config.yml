@@ -29,9 +29,18 @@ jobs:
     steps:
       - checkout
       - run:
-          name: WARNING add tests
+          name: Check if Gradle is installed
           command: |
-            echo "Oh no! This orb has no tests! Ensure these are added ASAP!"
+            if [[ $(command -v gradle) == "" ]]; then
+              echo " Gradle is not installed! "; exit 1;
+            else
+              echo Gradle successfully installed.
+            fi
+            if [[ $(command -v gradlew) == "" ]]; then
+              echo " gradlew is not installed! "; exit 1;
+            else
+              echo gradlew successfully installed.
+            fi
 
 workflows:
   # This `lint-pack_validate_publish-dev` workflow will run on any commit.
