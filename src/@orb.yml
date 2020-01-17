@@ -1,8 +1,7 @@
 version: 2.1
 
 description: >
-  Simplify common tasks for building and testing Java projects using
-  Gradle.
+  Simplify common tasks for building and testing Java projects using Gradle.
 
 display:
   home_url: "https://gradle.org/"
