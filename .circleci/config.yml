@@ -82,8 +82,8 @@ workflows:
       - integration-test-1
       - gradle/test:
           app_src_directory: sample_app
-          reports_path: sample_app/build/my-results/
-          test_results_path: sample_app/build/my-results/
+          reports_path: sample_app/build/reports/
+          test_results_path: sample_app/build/test-results/
 
       # publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"

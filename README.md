@@ -1,7 +1,6 @@
-# gradle Orb [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/gradle-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/CircleCI-Public/gradle-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/circleci/gradle)](https://circleci.com/orbs/registry/orb/circleci/gradle) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/CircleCI-Public/gradle-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
+# Gradle orb [![CircleCI Build Status](https://circleci.com/gh/CircleCI-Public/gradle-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/CircleCI-Public/gradle-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/circleci/gradle)](https://circleci.com/orbs/registry/orb/circleci/gradle) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/CircleCI-Public/gradle-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
 Simplify common tasks for building and testing Java projects using Gradle on CircleCI using this orb.
-
 
 ## Usage
 

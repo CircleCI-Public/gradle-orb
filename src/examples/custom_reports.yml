@@ -11,5 +11,5 @@ usage:
       jobs:
         - gradle/test:
             test_command: myTests
-            test_results_path: build/my-results/
-            store_artifacts: build/my-reports/
+            test_results_path: build/test-results/
+            store_artifacts: build/reports/
