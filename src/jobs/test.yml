@@ -15,12 +15,17 @@ parameters:
   reports_path:
     description: Artifacts to be published
     type: string
+  app_src_directory:
+    description: Useful when the source of your maven project is nott in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
+    type: string
+    default: ''
 steps:
   - checkout
   - with_cache:
       steps:
         - run:
             name: Run Tests
+            working_directory: << parameters.app_src_directory >>
             command: ./gradlew << parameters.test_command >>
   - collect_test_results:
       test_results_path: <<parameters.test_results_path>>

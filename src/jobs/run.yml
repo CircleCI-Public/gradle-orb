@@ -6,6 +6,10 @@ parameters:
     description: The name of custom executor to use
     type: executor
     default: default
+  app_src_directory:
+    description: Useful when the source of your maven project is nott in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
+    type: string
+    default: ''
   command:
     type: string
     default: build
@@ -14,5 +18,6 @@ steps:
   - with_cache:
       steps:
         - run:
+            working_directory: << parameters.app_src_directory >>
             name: Run Task
             command: ./gradlew << parameters.command >>
