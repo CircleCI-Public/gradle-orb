@@ -80,6 +80,8 @@ workflows:
 
       # an example job
       - integration-test-1
+      - gradle/test:
+          working_directory: sample_app
 
       # publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
@@ -97,6 +99,7 @@ workflows:
           publish-version-tag: false
           requires:
             - integration-test-1
+            - gradle/test
           filters:
             branches:
               only: master
