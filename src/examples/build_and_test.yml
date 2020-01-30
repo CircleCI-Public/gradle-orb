@@ -1,0 +1,11 @@
+description: Checkout, build, and test a Gradle project
+usage:
+  version: 2.1
+
+  orbs:
+    gradle: circleci/gradle@x.y
+
+  workflows:
+    checkout-build-test:
+      jobs:
+        - gradle/test

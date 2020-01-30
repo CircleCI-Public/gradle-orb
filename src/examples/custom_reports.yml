@@ -1,0 +1,15 @@
+description: >
+  Publish custom results and reports.
+usage:
+  version: 2.1
+
+  orbs:
+    gradle: circleci/gradle@x.y
+
+  workflows:
+    test-with-custom-reports:
+      jobs:
+        - gradle/test:
+            test_command: myTests
+            test_results_path: build/test-results/
+            store_artifacts: build/reports/
