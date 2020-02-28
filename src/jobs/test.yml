@@ -12,9 +12,11 @@ parameters:
   test_results_path:
     description: Results to be published
     type: string
+    default: build/test-results/
   reports_path:
     description: Artifacts to be published
     type: string
+    default: build/reports/
   app_src_directory:
     description: Useful when the source of your maven project is nott in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
     type: string
