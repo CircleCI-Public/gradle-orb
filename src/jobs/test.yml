@@ -21,6 +21,10 @@ parameters:
     description: Useful when the source of your maven project is nott in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
     type: string
     default: ''
+  cache_key:
+    description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
+    type: string
+    default: 'v1'
 steps:
   - checkout
   - with_cache:
@@ -29,6 +33,7 @@ steps:
             name: Run Tests
             working_directory: << parameters.app_src_directory >>
             command: ./gradlew << parameters.test_command >>
+            cache_key: << parameters.cache_key >>
   - collect_test_results:
       test_results_path: <<parameters.test_results_path>>
       reports_path: <<parameters.reports_path>>
