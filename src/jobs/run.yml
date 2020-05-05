@@ -7,12 +7,20 @@ parameters:
     type: executor
     default: default
   app_src_directory:
-    description: Useful when the source of your maven project is nott in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
+    description: Useful when the source of your maven project is not in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
     type: string
     default: ''
   command:
     type: string
     default: build
+  cache_key:
+    description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
+    type: string
+    default: 'v1'
+  cache_checksum_file:
+    description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
+    type: string
+    default: 'build.gradle'
 steps:
   - checkout
   - with_cache:
@@ -21,3 +29,5 @@ steps:
             working_directory: << parameters.app_src_directory >>
             name: Run Task
             command: ./gradlew << parameters.command >>
+            cache_key: << parameters.cache_key >>
+            cache_checksum_file: << parameters.cache_checksum_file >>
