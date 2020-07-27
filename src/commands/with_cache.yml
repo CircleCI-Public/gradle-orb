@@ -14,10 +14,14 @@ parameters:
     description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
     type: string
     default: 'v1'
+  cache_checksum_file:
+    description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
+    type: string
+    default: 'build.gradle'
 steps:
   - run:
       name: Generate Cache Checksum
-      command: find . -name 'build.gradle' | sort | xargs cat | shasum | awk '{print $1}' > /tmp/gradle_cache_seed
+      command: find . -name '<< parameters.cache_checksum_file>>' | sort | xargs cat | shasum | awk '{print $1}' > /tmp/gradle_cache_seed
   - restore_cache:
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
   - steps: << parameters.steps >>
