@@ -24,10 +24,11 @@ parameters:
 steps:
   - checkout
   - with_cache:
+      cache_key: << parameters.cache_key >>
+      cache_checksum_file: << parameters.cache_checksum_file >>
       steps:
         - run:
             working_directory: << parameters.app_src_directory >>
             name: Run Task
             command: ./gradlew << parameters.command >>
-            cache_key: << parameters.cache_key >>
-            cache_checksum_file: << parameters.cache_checksum_file >>
+
