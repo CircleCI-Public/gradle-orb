@@ -1,0 +1,53 @@
+version: 2.1
+orbs:
+  gradle: circleci/gradle@dev:<<pipeline.git.revision>>
+  orb-tools: circleci/orb-tools@11.1
+filters: &filters
+  tags:
+    only: /.*/
+jobs:
+  # This job is an example of an integration testing job.
+  # This job should execute a command from your orb and verify
+  # the output is as expected, otherwise the job should fail.
+  #
+  # Rename this job and add more as needed.
+  #
+  integration-test-1:
+    executor: gradle/default
+    steps:
+      - checkout
+      - run:
+          name: Check if Gradle is installed
+          command: |-
+            if [[ $(command -v gradle) == "" ]]; then
+              echo " Gradle is not installed! "; exit 1;
+            else
+              echo Gradle successfully installed.
+            fi
+workflows:
+  test-deploy:
+    jobs:
+      - integration-test-1:
+          filters: *filters
+      - gradle/test:
+          app_src_directory: sample_app
+          reports_path: sample_app/build/reports/
+          test_results_path: sample_app/build/test-results/
+          filters: *filters
+      - orb-tools/pack:
+          filters: *filters
+      - orb-tools/publish:
+          orb-name: circleci/gradle
+          vcs-type: << pipeline.project.type >>
+          pub-type: production
+          github-token: GHI_TOKEN
+          requires:
+            - orb-tools/pack
+            - integration-test-1
+            - gradle/test
+          context: orb-publisher
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
