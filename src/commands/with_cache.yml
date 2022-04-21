@@ -21,7 +21,9 @@ parameters:
 steps:
   - run:
       name: Generate Cache Checksum
-      command: find . -name '<< parameters.cache_checksum_file>>' | sort | xargs cat | shasum | awk '{print $1}' > /tmp/gradle_cache_seed
+      command: << include(scripts/checksum_files.sh) >>
+      environment: 
+        PARAM_CHECKSUM_FILES: << parameters.cache_checksum_file>>
   - restore_cache:
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
   - steps: << parameters.steps >>
