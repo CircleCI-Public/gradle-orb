@@ -27,13 +27,13 @@ steps:
       name: Generate Dependencies Checksum
       command: << include(scripts/checksum_files.sh) >>
       environment:
-        PARAM_CHECKSUM_FILES: << parameters.cache_checksum_file>>
+        PARAM_CHECKSUM_FILES: << parameters.deps_checksum_file>>
         CHECKSUM_SEED_LOCATION: "/tmp/gradle_dep_cache_seed"
   - run:
       name: Generate Wrapper Checksum
       command: << include(scripts/checksum_files.sh) >>
       environment:
-        PARAM_CHECKSUM_FILES: << parameters.cache_checksum_file>>
+        PARAM_CHECKSUM_FILES: << parameters.wrapper_checksum_file>>
         CHECKSUM_SEED_LOCATION: "/tmp/gradle_wrapper_cache_seed"
   - restore_cache:
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_dep_cache_seed" }}
