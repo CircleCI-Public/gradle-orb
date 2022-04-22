@@ -32,6 +32,7 @@ workflows:
       - gradle/test:
           app_src_directory: sample_app
           reports_path: sample_app/build/reports/
+          cache_key: 'v2'
           test_results_path: sample_app/build/test-results/
           filters: *filters
       - orb-tools/pack:
