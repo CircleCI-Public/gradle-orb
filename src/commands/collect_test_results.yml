@@ -6,7 +6,7 @@ parameters:
   test_results_path:
     description: Results to be published
     type: string
-    default: build/test-results/
+    default: ''
   reports_path:
     description: Artifacts to be published
     type: string
