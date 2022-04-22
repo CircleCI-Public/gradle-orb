@@ -15,11 +15,11 @@ parameters:
     type: string
     default: "v1"
   deps_checksum_file:
-    description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
+    description: File to use to generate the cache checksum for dependencies. Defaults to build.gradle. For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
     type: string
     default: "build.gradle"
   wrapper_checksum_file:
-    description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
+    description: File to use to generate the cache checksum for the gradle wrapper. Defaults to gradlew. For example, if testing on Windows, gradlew.bat should be used instead.
     type: string
     default: "gradlew"
 steps:
