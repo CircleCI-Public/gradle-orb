@@ -34,6 +34,10 @@ workflows:
           reports_path: sample_app/build/reports/
           test_results_path: sample_app/build/test-results/
           filters: *filters
+      - gradle/test:
+          app_src_directory: sample_app
+          reports_path: sample_app/build/reports/
+          filters: *filters
       - orb-tools/pack:
           filters: *filters
       - orb-tools/publish:
