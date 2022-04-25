@@ -14,21 +14,37 @@ parameters:
     description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
     type: string
     default: "v1"
-  cache_checksum_file:
-    description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
+  deps_checksum_file:
+    description: File to use to generate the cache checksum for dependencies. Defaults to build.gradle. For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
     type: string
     default: "build.gradle"
+  wrapper_checksum_file:
+    description: File to use to generate the cache checksum for the gradle wrapper. Defaults to gradlew. For example, if testing on Windows, gradlew.bat should be used instead.
+    type: string
+    default: "gradlew"
 steps:
   - run:
-      name: Generate Cache Checksum
+      name: Generate Dependencies Checksum
       command: << include(scripts/checksum_files.sh) >>
       environment:
-        PARAM_CHECKSUM_FILES: << parameters.cache_checksum_file>>
+        PARAM_CHECKSUM_FILES: << parameters.deps_checksum_file>>
+        CHECKSUM_SEED_LOCATION: "/tmp/gradle_dep_cache_seed"
+  - run:
+      name: Generate Wrapper Checksum
+      command: << include(scripts/checksum_files.sh) >>
+      environment:
+        PARAM_CHECKSUM_FILES: << parameters.wrapper_checksum_file>>
+        CHECKSUM_SEED_LOCATION: "/tmp/gradle_wrapper_cache_seed"
   - restore_cache:
-      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
+      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_dep_cache_seed" }}
+  - restore_cache:
+      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_wrapper_cache_seed" }}
   - steps: << parameters.steps >>
   - save_cache:
       paths:
         - ~/.gradle/caches
+      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_dep_cache_seed" }}
+  - save_cache:
+      paths:
         - ~/.gradle/wrapper
-      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_cache_seed" }}-{{ checksum ".circleci/config.yml" }}
+      key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_wrapper_cache_seed" }}
