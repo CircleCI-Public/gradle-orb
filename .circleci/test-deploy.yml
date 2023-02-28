@@ -24,6 +24,7 @@ jobs:
             else
               echo Gradle successfully installed.
             fi
+      - run: java --version
 workflows:
   test-deploy:
     jobs:
