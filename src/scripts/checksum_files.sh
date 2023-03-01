@@ -1,5 +1,3 @@
-CHECKSUM_STRING="${PARAM_CHECKSUM_FILES}"
-
 #check for an array
 if [[ "${PARAM_CHECKSUM_FILES}" == *","* ]]; then
     CHECKSUM_STRING=""
@@ -15,11 +13,12 @@ if [[ "${PARAM_CHECKSUM_FILES}" == *","* ]]; then
             currentString="${CHECKSUM_ARRAY[i]//,/}"
             if [[ $i == 0 ]]; then
             CHECKSUM_STRING=$currentString
-            fi
-            if [[ $i != 0 ]]; then
+            else
             CHECKSUM_STRING=$CHECKSUM_STRING" -or -name "$currentString
             fi
         done
+else 
+    CHECKSUM_STRING="${PARAM_CHECKSUM_FILES}"
 fi
 
 find . -name "${CHECKSUM_STRING}" | sort | xargs cat | shasum | awk '{print $1}' > "${CHECKSUM_SEED_LOCATION}"

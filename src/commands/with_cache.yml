@@ -17,11 +17,11 @@ parameters:
   deps_checksum_file:
     description: Files to use to generate the cache checksum for dependencies. Defaults to build.gradle. For example if using Gradle Kotlin DSL then set to build.gradle.kts instead. To use multiple files separate each with commas for example 'build.gradle.kts, settings.gradle.kts, libs.versions.toml'
     type: string
-    default: "build.gradle"
+    default:  'build.gradle, build.gradle.kts, settings.gradle.kts, libs.versions.toml'
   wrapper_checksum_file:
     description: Files to use to generate the cache checksum for the gradle wrapper. Defaults to gradlew. For example, if testing on Windows, gradlew.bat should be used instead. To use multiple files separate each with commas for example 'build.gradle.kts, settings.gradle.kts, libs.versions.toml'
     type: string
-    default: "gradlew"
+    default: "gradle/wrapper/gradle-wrapper.properties"
 steps:
   - run:
       name: Generate Dependencies Checksum
