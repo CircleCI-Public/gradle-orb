@@ -18,11 +18,11 @@ parameters:
     type: string
     default: build/reports/
   app_src_directory:
-    description: Useful when the source of your maven project is not in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
+    description: Useful when the source of your gradle project is not in the root directory of your git repo. Supply the name of the directory or relative path of the directory containing your source code.
     type: string
     default: ''
   cache_key:
-    description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
+    description: Add a custom suffix to your cache key in the event you need to work with multiple gradle caches.
     type: string
     default: 'v1'
   deps_checksum_file:

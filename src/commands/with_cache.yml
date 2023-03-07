@@ -11,7 +11,7 @@ parameters:
   steps:
     type: steps
   cache_key:
-    description: Add a custom suffix to your cache key in the event you need to work with multiple maven caches.
+    description: Add a custom suffix to your cache key in the event you need to work with multiple gradle caches.
     type: string
     default: "v1"
   deps_checksum_file:
