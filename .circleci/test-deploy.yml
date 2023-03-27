@@ -13,7 +13,6 @@ commands:
     description: Cache the build cache
     steps:
       - gradle/with_cache:
-          app_src_directory: sample_app
           cache_key: *cache-key
           steps:
             - run:
