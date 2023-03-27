@@ -3,7 +3,7 @@ description: |
   This command will first restore a cache of gradle dependencies, if one was
   saved by a previous build. The provided `steps` will then be executed, and
   if successful, then a fresh cache will be saved, if required.
-  The contents of the `~/.gradle` directory is cached, which will substantially
+  The contents of the `~/.gradle/cache` directory is cached, which will substantially
   improve build times for projects with many dependencies.
   The cache-key is generated from any files named `build.gradle` that are
   present in the `working_directory`.
@@ -17,7 +17,7 @@ parameters:
   deps_checksum_file:
     description: Files to use to generate the cache checksum for dependencies. Defaults to build.gradle. For example if using Gradle Kotlin DSL then set to build.gradle.kts instead. To use multiple files separate each with commas for example 'build.gradle.kts, settings.gradle.kts, libs.versions.toml'
     type: string
-    default:  'build.gradle, build.gradle.kts, settings.gradle.kts, libs.versions.toml'
+    default:  'build.gradle, build.gradle.kts, settings.gradle, settings.gradle.kts, libs.versions.toml'
 steps:
   - run:
       name: Generate Dependencies Checksum
@@ -32,8 +32,10 @@ steps:
         PARAM_CHECKSUM_FILES: "gradle-wrapper.properties"
         CHECKSUM_SEED_LOCATION: "/tmp/gradle_wrapper_cache_seed"
   - restore_cache:
+      name: Restore Gradle Cache
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_dep_cache_seed" }}
   - restore_cache:
+      name: Restore Gradle Wrapper Cache
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_wrapper_cache_seed" }}
   - steps: << parameters.steps >>
   - save_cache:
