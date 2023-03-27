@@ -10,7 +10,7 @@ aliases:
 
 commands:
   verify_with_cache:
-    description: Cache the build cache
+    description: Verify with_cache command
     steps:
       - gradle/with_cache:
           cache_key: *cache-key
