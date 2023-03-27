@@ -7,13 +7,12 @@ filters: &all-tags
     only: /.*/
 aliases:
   - &cache-key <<pipeline.git.revision>>
-  
+
 commands:
   verify_with_cache:
     description: Cache the build cache
     steps:
       - gradle/with_cache:
-          app_src_directory: sample_app
           cache_key: *cache-key
           steps:
             - run:
@@ -40,7 +39,7 @@ commands:
                   if [[ ! -e $GRADLE_WRAPPER_DIRECTORY ]]; then
                     echo "No gradle wrapper directory detected at $GRADLE_WRAPPER_DIRECTORY"
                     exit 1
-                  fi     
+                  fi
                   size=$(du -hs --block-size=1000000 $GRADLE_WRAPPER_DIRECTORY)
                   sizeArray=($size)
                   mbCount=${sizeArray[0]}
@@ -48,7 +47,7 @@ commands:
                     echo "Gradle wrapper cache directory is only size ${sizeArray[0]}, expected at least 10M"
                     exit 1
                   fi
-  
+
 jobs:
   # Execute a command from the orb and verify
   # the output is as expected
