@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   gradle: circleci/gradle@dev:<<pipeline.git.revision>>
   orb-tools: circleci/orb-tools@11.6.1
-filters: &all-tags
+filters: &filters
   tags:
     only: /.*/
 aliases:
@@ -66,13 +66,13 @@ workflows:
           reports_path: sample_app/build/reports/
           cache_key: *cache-key
           test_results_path: sample_app/build/test-results/
-          filters: *all-tags
+          filters: *filters
       - integration-test-cache:
-          filters: *all-tags
+          filters: *filters
           requires:
             - gradle/test
       - orb-tools/pack:
-          filters: *all-tags
+          filters: *filters
       - orb-tools/publish:
           orb-name: circleci/gradle
           vcs-type: << pipeline.project.type >>
