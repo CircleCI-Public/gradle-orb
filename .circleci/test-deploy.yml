@@ -1,43 +1,79 @@
 version: 2.1
 orbs:
   gradle: circleci/gradle@dev:<<pipeline.git.revision>>
-  orb-tools: circleci/orb-tools@11.1
-filters: &filters
+  orb-tools: circleci/orb-tools@11.6.1
+filters: &all-tags
   tags:
     only: /.*/
+aliases:
+  - &cache-key <<pipeline.git.revision>>
+  
+commands:
+  verify_with_cache:
+    description: Cache the build cache
+    steps:
+      - gradle/with_cache:
+          app_src_directory: sample_app
+          cache_key: *cache-key
+          steps:
+            - run:
+                name: Check if Gradle wrapper and cache was saved and restored
+                command: |
+                  GRADLE_DIRECTORY="$HOME/.gradle"
+                  if [[ ! -e $GRADLE_DIRECTORY ]]; then
+                    echo "No gradle directory detected at $GRADLE_DIRECTORY"
+                    exit 1
+                  fi
+                  GRADLE_CACHE_DIRECTORY="$GRADLE_DIRECTORY/caches"
+                  if [[ ! -e $GRADLE_CACHE_DIRECTORY ]]; then
+                    echo "No gradle cache directory detected at $GRADLE_CACHE_DIRECTORY"
+                    exit 1
+                  fi
+                  size=$(du -hs --block-size=1000000 $GRADLE_CACHE_DIRECTORY)
+                  sizeArray=($size)
+                  mbCount=${sizeArray[0]}
+                  if [ "$mbCount" -lt 3 ]; then
+                    echo "Gradle cache directory is only size ${sizeArray[0]}, expected at least 3M"
+                    exit 1
+                  fi
+                  GRADLE_WRAPPER_DIRECTORY="$GRADLE_DIRECTORY/wrapper"
+                  if [[ ! -e $GRADLE_WRAPPER_DIRECTORY ]]; then
+                    echo "No gradle wrapper directory detected at $GRADLE_WRAPPER_DIRECTORY"
+                    exit 1
+                  fi     
+                  size=$(du -hs --block-size=1000000 $GRADLE_WRAPPER_DIRECTORY)
+                  sizeArray=($size)
+                  mbCount=${sizeArray[0]}
+                  if [ "$mbCount" -lt 10 ]; then
+                    echo "Gradle wrapper cache directory is only size ${sizeArray[0]}, expected at least 10M"
+                    exit 1
+                  fi
+  
 jobs:
-  # This job is an example of an integration testing job.
-  # This job should execute a command from your orb and verify
-  # the output is as expected, otherwise the job should fail.
+  # Execute a command from the orb and verify
+  # the output is as expected
   #
-  # Rename this job and add more as needed.
-  #
-  integration-test-1:
+  integration-test-cache:
     executor: gradle/default
     steps:
       - checkout
-      - run:
-          name: Check if Gradle is installed
-          command: |-
-            if [[ $(command -v gradle) == "" ]]; then
-              echo " Gradle is not installed! "; exit 1;
-            else
-              echo Gradle successfully installed.
-            fi
-      - run: java --version
+      - verify_with_cache
+
 workflows:
   test-deploy:
     jobs:
-      - integration-test-1:
-          filters: *filters
       - gradle/test:
           app_src_directory: sample_app
           reports_path: sample_app/build/reports/
-          cache_key: 'v2'
+          cache_key: *cache-key
           test_results_path: sample_app/build/test-results/
-          filters: *filters
+          filters: *all-tags
+      - integration-test-cache:
+          filters: *all-tags
+          requires:
+            - gradle/test
       - orb-tools/pack:
-          filters: *filters
+          filters: *all-tags
       - orb-tools/publish:
           orb-name: circleci/gradle
           vcs-type: << pipeline.project.type >>
@@ -45,7 +81,7 @@ workflows:
           github-token: GHI_TOKEN
           requires:
             - orb-tools/pack
-            - integration-test-1
+            - integration-test-cache
             - gradle/test
           context: orb-publisher
           filters:
