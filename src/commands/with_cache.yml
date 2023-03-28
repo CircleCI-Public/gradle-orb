@@ -39,10 +39,12 @@ steps:
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_wrapper_cache_seed" }}
   - steps: << parameters.steps >>
   - save_cache:
+      name: Save Gradle Cache
       paths:
         - ~/.gradle/caches
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_dep_cache_seed" }}
   - save_cache:
+      name: Save Gradle Wrapper Cache
       paths:
         - ~/.gradle/wrapper
       key: gradle-<< parameters.cache_key>>-{{ checksum "/tmp/gradle_wrapper_cache_seed" }}
