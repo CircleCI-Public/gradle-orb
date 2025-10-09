@@ -28,6 +28,7 @@ steps:
             command: |
               mkdir -p /tmp/test_results/junit
               find . -name '*TEST-*.xml' -exec cp -v {} /tmp/test_results/junit \;
+            when: always
         - store_test_results:
             path: /tmp/test_results
         - store_artifacts:
