@@ -29,8 +29,13 @@ parameters:
     description: File to use to generate the cache checksum for dependencies. Defaults to build.gradle. For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
     type: string
     default: 'build.gradle, build.gradle.kts, settings.gradle.kts, libs.versions.toml'
+  checkout_type:
+    type: enum
+    enum: [blobless, full]
+    default: blobless
 steps:
-  - checkout
+  - checkout:
+      method: <<parameters.checkout_type>>checkout
   - with_cache:
       cache_key: << parameters.cache_key >>
       deps_checksum_file: << parameters.deps_checksum_file >>
