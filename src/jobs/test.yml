@@ -35,7 +35,7 @@ parameters:
     default: blobless
 steps:
   - checkout:
-      method: <<parameters.checkout_type>>checkout
+      method: <<parameters.checkout_type>>
   - with_cache:
       cache_key: << parameters.cache_key >>
       deps_checksum_file: << parameters.deps_checksum_file >>
